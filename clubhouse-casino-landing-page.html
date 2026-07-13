@@ -413,6 +413,108 @@
   </div>
 </div>
 
+<section id="preview">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="eyebrow"><span class="dot"></span> Take A Look Inside</div>
+      <h2>See the club floor before you join</h2>
+      <p>A quick look at the lobby waiting for you the moment you sign in.</p>
+    </div>
+
+    <div class="site-preview">
+      <div class="preview-frame">
+        <div class="preview-chrome">
+          <span class="dot-red"></span>
+          <span class="dot-yellow"></span>
+          <span class="dot-green"></span>
+          <span class="preview-url mono">theclubhousecasino.com</span>
+        </div>
+        <div class="preview-image">
+          <img src="https://reviews4australia.com/The-Club-house-preview.jpg" alt="Preview of The Clubhouse Casino lobby" loading="lazy">
+          <div class="preview-glow"></div>
+        </div>
+      </div>
+
+      <div class="preview-cta">
+        <a href="https://reviews4australia.com/go/recommendation/1" class="btn btn-primary">Enter The Clubhouse</a>
+        <p class="fine">18+. New members only. Terms apply.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .site-preview{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:32px;
+  }
+
+  .preview-frame{
+    width:100%;
+    max-width:920px;
+    border-radius:16px;
+    overflow:hidden;
+    border:1px solid rgba(201,162,39,0.4);
+    background:linear-gradient(160deg, var(--emerald-mid), var(--near-black));
+    box-shadow:
+      0 30px 70px rgba(0,0,0,0.55),
+      inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+
+  .preview-chrome{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    padding:12px 16px;
+    background:rgba(18,16,13,0.6);
+    border-bottom:1px solid var(--felt-line);
+  }
+  .preview-chrome span.dot-red,
+  .preview-chrome span.dot-yellow,
+  .preview-chrome span.dot-green{
+    width:10px; height:10px; border-radius:50%;
+    display:inline-block;
+  }
+  .dot-red{ background:var(--burgundy); }
+  .dot-yellow{ background:var(--gold-dim); }
+  .dot-green{ background:var(--emerald-glow); }
+  .preview-url{
+    margin-left:12px;
+    font-size:0.75rem;
+    color:rgba(243,233,210,0.5);
+    letter-spacing:0.04em;
+  }
+
+  .preview-image{
+    position:relative;
+    width:100%;
+    aspect-ratio:16/9;
+    overflow:hidden;
+  }
+  .preview-image img{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .preview-glow{
+    position:absolute; inset:0;
+    background:radial-gradient(ellipse at 50% 100%, rgba(201,162,39,0.18), transparent 60%);
+    pointer-events:none;
+  }
+
+  .preview-cta{
+    text-align:center;
+  }
+
+  @media (max-width:600px){
+    .preview-chrome{ padding:10px 12px; }
+    .preview-url{ font-size:0.65rem; }
+  }
+</style>
+
+    
 <section id="bonus">
   <div class="wrap">
     <div class="section-head">
