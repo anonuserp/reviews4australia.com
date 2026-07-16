@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>reviews4australia — Real reviews from real Australians</title>
+<meta name="description" content="Search verified reviews on the businesses, tradies and services that matter across Australia. Read before you buy, book before you regret." />
+<meta name="trustpilot-one-time-domain-verification-id" content="3d7c82ae-e836-4d67-b029-0d277a09a3cc"/>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bush-ink:#14231C;
+    --bush-ink-2:#1C3129;
+    --paperbark:#EFE8D6;
+    --paperbark-2:#E4DBC2;
+    --ochre:#BD5B26;
+    --ochre-dark:#9A4A1F;
+    --eucalypt:#4F7863;
+    --eucalypt-2:#3C5E4C;
+    --sky-wash:#2B4A5E;
+    --charcoal:#232320;
+    --cream-text:#F4EFE2;
+    --line:#D8CDAE;
+    --radius:4px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paperbark);
+    color:var(--charcoal);
+    font-family:'IBM Plex Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;text-decoration:none;}
+  img{max-width:100%;display:block;}
+  .wrap{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 28px;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    opacity:0.75;
+  }
+
+  /* ---------- Postmark dotted divider ---------- */
+  .postmark-divider{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:36px 0;
+  }
+  .postmark-divider .line{
+    flex:1;
+    height:0;
+    border-top:2px dotted var(--line);
+  }
+  .postmark-divider .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--ochre);
+    flex-shrink:0;
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    background:var(--bush-ink);
+    color:var(--cream-text);
+    position:sticky;
+    top:0;
+    z-index:50;
+    border-bottom:1px solid rgba(244,239,226,0.12);
+  }
+  nav{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:16px 28px;
+    max-width:1180px;
+    margin:0 auto;
+  }
+  .logo{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:20px;
+    color:var(--cream-text);
+  }
+  .logo-mark{
+    width:34px;height:34px;
+    border-radius:50%;
+    border:2px dashed var(--ochre);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--ochre);
+    flex-shrink:0;
+  }
+  .nav-links{
+    display:flex;
+    gap:32px;
+    font-size:14.5px;
+  }
+  .nav-links a{
+    opacity:0.85;
+    transition:opacity .15s ease;
+    position:relative;
+  }
+  .nav-links a:hover{opacity:1;}
+  .nav-cta{
+    background:var(--ochre);
+    color:var(--cream-text);
+    padding:10px 18px;
+    border-radius:var(--radius);
+    font-size:14px;
+    font-weight:600;
+    transition:background .15s ease;
+    white-space:nowrap;
+  }
+  .nav-cta:hover{background:var(--ochre-dark);}
+  .nav-toggle{
+    display:none;
+    background:none;border:none;color:var(--cream-text);
+    font-size:26px;cursor:pointer;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    background:
+      radial-gradient(ellipse at 85% -10%, rgba(79,120,99,0.35), transparent 55%),
+      var(--bush-ink);
+    color:var(--cream-text);
+    padding:88px 0 96px;
+    position:relative;
+    overflow:hidden;
+  }
+  .hero::after{
+    content:"";
+    position:absolute;
+    right:-120px;
+    bottom:-140px;
+    width:520px;height:520px;
+    border:1px dashed rgba(244,239,226,0.14);
+    border-radius:50%;
+  }
+  .hero-inner{
+    display:grid;
+    grid-template-columns:1.15fr 0.85fr;
+    gap:48px;
+    align-items:center;
+    position:relative;
+  }
+  .hero h1{
+    font-size:clamp(34px, 5vw, 56px);
+    line-height:1.06;
+    margin:16px 0 20px;
+    max-width:16ch;
+    opacity:0;
+    animation:riseIn .7s ease forwards .05s;
+  }
+  .hero p.lede{
+    font-size:17.5px;
+    line-height:1.6;
+    max-width:46ch;
+    color:rgba(244,239,226,0.82);
+    opacity:0;
+    animation:riseIn .7s ease forwards .18s;
+  }
+  @keyframes riseIn{
+    from{opacity:0; transform:translateY(14px);}
+    to{opacity:1; transform:translateY(0);}
+  }
+  .search-box{
+    margin-top:30px;
+    display:flex;
+    background:var(--cream-text);
+    border-radius:var(--radius);
+    padding:6px;
+    max-width:520px;
+    box-shadow:0 18px 40px rgba(0,0,0,0.28);
+    opacity:0;
+    animation:riseIn .7s ease forwards .3s;
+  }
+  .search-box input{
+    flex:1;
+    border:none;background:transparent;
+    padding:14px 14px;
+    font-family:'IBM Plex Sans', sans-serif;
+    font-size:15px;
+    color:var(--charcoal);
+    outline:none;
+  }
+  .search-box button{
+    background:var(--eucalypt);
+    color:var(--cream-text);
+    border:none;
+    padding:0 22px;
+    border-radius:2px;
+    font-weight:600;
+    font-size:14.5px;
+    cursor:pointer;
+    transition:background .15s ease;
+  }
+  .search-box button:hover{background:var(--eucalypt-2);}
+  .search-hint{
+    margin-top:10px;
+    font-size:12.5px;
+    color:rgba(244,239,226,0.55);
+  }
+
+  /* ---------- Stamp badge (signature element) ---------- */
+  .stamp{
+    width:190px;height:190px;
+    border-radius:50%;
+    border:2px dashed var(--ochre);
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    color:var(--ochre);
+    transform:rotate(-6deg);
+    background:rgba(189,91,38,0.06);
+    position:relative;
+  }
+  .stamp .num{
+    font-family:'Fraunces', serif;
+    font-weight:700;
+    font-size:44px;
+    line-height:1;
+  }
+  .stamp .lbl{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.16em;
+    text-transform:uppercase;
+    margin-top:6px;
+  }
+  .stamp .ring-text{
+    position:absolute;
+    inset:10px;
+    border-radius:50%;
+  }
+  .stamp-caption{
+    text-align:center;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12px;
+    color:rgba(244,239,226,0.6);
+    margin-top:14px;
+    letter-spacing:0.04em;
+  }
+
+  /* ---------- Trust bar ---------- */
+  .trust-bar{
+    background:var(--bush-ink-2);
+    color:var(--cream-text);
+    padding:26px 0;
+  }
+  .trust-bar .wrap{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:20px;
+  }
+  .trust-item{
+    display:flex;
+    align-items:baseline;
+    gap:8px;
+    font-size:14px;
+  }
+  .trust-item strong{
+    font-family:'Fraunces', serif;
+    font-size:20px;
+    color:var(--ochre);
+    font-weight:600;
+  }
+
+  /* ---------- Section titles ---------- */
+  .section{
+    padding:78px 0;
+  }
+  .section-head{
+    max-width:640px;
+    margin-bottom:44px;
+  }
+  .section-head h2{
+    font-size:clamp(26px,3.4vw,34px);
+    margin-top:10px;
+  }
+  .section-head p{
+    margin-top:14px;
+    font-size:15.5px;
+    line-height:1.6;
+    color:#4a4a44;
+  }
+
+  /* ---------- Categories ---------- */
+  .cat-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:20px;
+  }
+  .cat-card{
+    background:var(--paperbark-2);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .cat-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 12px 24px rgba(20,35,28,0.10);
+    border-color:var(--eucalypt);
+  }
+  .cat-card .cat-icon{
+    width:40px;height:40px;
+    border-radius:50%;
+    background:var(--eucalypt);
+    color:var(--cream-text);
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    margin-bottom:16px;
+  }
+  .cat-card h3{
+    font-size:18px;
+    margin-bottom:6px;
+  }
+  .cat-card p{
+    font-size:13.5px;
+    color:#55554d;
+    line-height:1.5;
+    margin:0;
+  }
+  .cat-card .count{
+    display:inline-block;
+    margin-top:14px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ochre-dark);
+    letter-spacing:0.04em;
+  }
+
+  /* ---------- Reviews ---------- */
+  .review-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:24px;
+  }
+  .review-card{
+    background:var(--cream-text);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:26px 24px 22px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+  }
+  .review-card .stars{
+    color:var(--ochre);
+    font-size:16px;
+    letter-spacing:2px;
+  }
+  .review-card blockquote{
+    margin:0;
+    font-size:15px;
+    line-height:1.6;
+    color:var(--charcoal);
+  }
+  .review-card .who{
+    margin-top:auto;
+    padding-top:12px;
+    border-top:1px dotted var(--line);
+    font-size:13px;
+    color:#5b5b52;
+  }
+  .review-card .who strong{
+    display:block;
+    color:var(--charcoal);
+    font-size:14px;
+  }
+  .review-card .biz{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--eucalypt-2);
+  }
+
+  /* ---------- How it works ---------- */
+  .steps{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:32px;
+    counter-reset:step;
+  }
+  .step{
+    position:relative;
+    padding-left:0;
+  }
+  .step .step-num{
+    font-family:'Fraunces', serif;
+    font-size:44px;
+    font-weight:600;
+    color:var(--eucalypt);
+    opacity:0.35;
+    line-height:1;
+    margin-bottom:10px;
+  }
+  .step h3{
+    font-size:18px;
+    margin-bottom:8px;
+  }
+  .step p{
+    font-size:14.5px;
+    line-height:1.6;
+    color:#4a4a44;
+    margin:0;
+  }
+
+  /* ---------- Business CTA ---------- */
+  .biz-cta{
+    background:var(--eucalypt);
+    color:var(--cream-text);
+    border-radius:6px;
+    padding:52px 48px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:32px;
+    flex-wrap:wrap;
+  }
+  .biz-cta h2{
+    color:var(--cream-text);
+    font-size:clamp(22px,3vw,30px);
+    max-width:22ch;
+  }
+  .biz-cta p{
+    margin-top:10px;
+    color:rgba(244,239,226,0.85);
+    font-size:15px;
+    max-width:44ch;
+    line-height:1.6;
+  }
+  .btn-cream{
+    background:var(--cream-text);
+    color:var(--bush-ink);
+    padding:14px 26px;
+    border-radius:var(--radius);
+    font-weight:600;
+    font-size:14.5px;
+    white-space:nowrap;
+    transition:background .15s ease;
+  }
+  .btn-cream:hover{background:#e7e0cd;}
+
+  /* ---------- Footer ---------- */
+  footer{
+    background:var(--bush-ink);
+    color:rgba(244,239,226,0.75);
+    padding:64px 0 28px;
+    font-size:13.5px;
+  }
+  .footer-grid{
+    display:grid;
+    grid-template-columns:1.4fr repeat(4, 1fr);
+    gap:28px;
+    padding-bottom:40px;
+  }
+  .footer-grid h4{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--cream-text);
+    margin-bottom:16px;
+  }
+  .footer-grid ul{list-style:none;margin:0;padding:0;}
+  .footer-grid li{margin-bottom:10px;}
+  .footer-grid a{opacity:0.85;transition:opacity .15s ease;}
+  .footer-grid a:hover{opacity:1;}
+  .footer-brand p{
+    font-size:13.5px;
+    line-height:1.6;
+    max-width:34ch;
+    color:rgba(244,239,226,0.65);
+    margin-top:14px;
+  }
+  .footer-bottom{
+    border-top:1px solid rgba(244,239,226,0.14);
+    padding-top:22px;
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:12px;
+    font-size:12.5px;
+    color:rgba(244,239,226,0.5);
+  }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 900px){
+    .hero-inner{grid-template-columns:1fr;}
+    .cat-grid{grid-template-columns:repeat(2,1fr);}
+    .review-grid{grid-template-columns:1fr;}
+    .steps{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:repeat(2,1fr);}
+    .nav-links{display:none;}
+    .nav-toggle{display:block;}
+  }
+  @media (max-width: 560px){
+    .cat-grid{grid-template-columns:1fr;}
+    .footer-grid{grid-template-columns:1fr;}
+    .biz-cta{flex-direction:column; align-items:flex-start;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+    html{scroll-behavior:auto;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <a href="#" class="logo">
+      <span class="logo-mark">r4a</span>
+      reviews4australia
+    </a>
+    <div class="nav-links">
+      <a href="#categories">Categories</a>
+      <a href="#reviews">Reviews</a>
+      <a href="#how-it-works">How it works</a>
+      <a href="#for-business">For businesses</a>
+    </div>
+    <a href="#" class="nav-cta">Write a review</a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-inner">
+    <div>
+      <span class="eyebrow" style="color:rgba(244,239,226,0.6)">Independent · Verified · Australia-wide</span>
+      <h1>Real reviews from real Australians.</h1>
+      <p class="lede">Search verified reviews on the tradies, retailers, insurers and services that matter — before you hand over your hard-earned. No fake five-stars, no astroturfing, just people who've actually been through it.</p>
+      <form class="search-box" onsubmit="return false;">
+        <input type="text" placeholder="Search a business, tradie or service…" aria-label="Search a business" />
+        <button type="submit">Search</button>
+      </form>
+      <p class="search-hint">Try "plumber Brisbane", "car insurance", or a business name.</p>
+    </div>
+    <div>
+      <div class="stamp">
+        <span class="num">4.6</span>
+        <span class="lbl">Avg. Rating</span>
+      </div>
+      <p class="stamp-caption">STAMPED &amp; VERIFIED — 2.4M+ REVIEWS ON FILE</p>
+    </div>
+  </div>
+</section>
+
+<div class="trust-bar">
+  <div class="wrap">
+    <div class="trust-item"><strong>2.4M+</strong> verified reviews collected</div>
+    <div class="trust-item"><strong>48,000+</strong> businesses listed</div>
+    <div class="trust-item"><strong>8/8</strong> states &amp; territories covered</div>
+    <div class="trust-item"><strong>Est. 2015</strong> independently run</div>
+  </div>
+</div>
+
+<section class="section" id="categories">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="color:var(--ochre-dark)">Browse by category</span>
+      <h2>Find reviews on almost anything.</h2>
+      <p>From the tradie re-tiling your bathroom to the insurer covering your ute, if Australians are paying for it, someone's reviewed it here.</p>
+    </div>
+    <div class="cat-grid">
+      <div class="cat-card">
+        <div class="cat-icon">H</div>
+        <h3>Home &amp; Trades</h3>
+        <p>Builders, plumbers, electricians, landscapers and removalists.</p>
+        <span class="count">12,480 businesses</span>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">R</div>
+        <h3>Retail &amp; Shopping</h3>
+        <p>Online stores, furniture, fashion and homewares.</p>
+        <span class="count">9,110 businesses</span>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">T</div>
+        <h3>Travel &amp; Tourism</h3>
+        <p>Tour operators, accommodation, car hire and airlines.</p>
+        <span class="count">6,240 businesses</span>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">$</div>
+        <h3>Money &amp; Insurance</h3>
+        <p>Banks, insurers, super funds and financial advisers.</p>
+        <span class="count">3,860 businesses</span>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">+</div>
+        <h3>Health &amp; Wellbeing</h3>
+        <p>Clinics, dentists, allied health and fitness studios.</p>
+        <span class="count">7,530 businesses</span>
+      </div>
+      <div class="cat-card">
+        <div class="cat-icon">@</div>
+        <h3>Tech &amp; Telco</h3>
+        <p>Internet providers, mobile plans, software and repairs.</p>
+        <span class="count">4,970 businesses</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="postmark-divider"><span class="dot"></span><span class="line"></span><span class="dot"></span></div></div>
+
+<section class="section" id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="color:var(--ochre-dark)">Fresh off the presses</span>
+      <h2>What Australians are saying this week.</h2>
+    </div>
+    <div class="review-grid">
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Turned up on time, quoted fair, and didn't try to upsell me on a whole new hot water system. Wish every tradie was this straight up."</blockquote>
+        <div class="who">
+          <span class="biz">Kangaroo Paw Plumbing</span>
+          <strong>D. Marsh</strong>
+          Adelaide, SA
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★☆</div>
+        <blockquote>"Claim was handled faster than I expected after the storm. Only reason it's not five stars is the hold music. Genuinely, get better hold music."</blockquote>
+        <div class="who">
+          <span class="biz">Coastal Trail Insurance</span>
+          <strong>R. Okafor</strong>
+          Brisbane, QLD
+        </div>
+      </div>
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <blockquote>"Finally an internet provider that tells you the truth about speeds in your area instead of just signing you up. Switched and haven't looked back."</blockquote>
+        <div class="who">
+          <span class="biz">Outback Fibre Broadband</span>
+          <strong>S. Nguyen</strong>
+          Perth, WA
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="how-it-works" style="background:var(--paperbark-2)">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow" style="color:var(--ochre-dark)">How it works</span>
+      <h2>Three steps, no nonsense.</h2>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <h3>Search a business</h3>
+        <p>Look up any business, tradie or service by name, category or suburb.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <h3>Read verified reviews</h3>
+        <p>Every review is checked for genuine customer activity before it goes live.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <h3>Share your experience</h3>
+        <p>Good, bad or somewhere in between — your review helps the next person decide.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="for-business">
+  <div class="wrap">
+    <div class="biz-cta">
+      <div>
+        <h2>Own a business? Get your free listing.</h2>
+        <p>Claim your profile, respond to reviews, and show customers you're worth trusting — verified reviews build more credibility than any ad.</p>
+      </div>
+      <a href="#" class="btn-cream">Claim your business</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo">
+          <span class="logo-mark">r4a</span>
+          reviews4australia
+        </div>
+        <p>Independent, verified reviews for Australian consumers. We're not paid to rank anyone higher — reviews are earned, not bought.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#categories">Categories</a></li>
+          <li><a href="#">Top rated</a></li>
+          <li><a href="#">Recently reviewed</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>For business</h4>
+        <ul>
+          <li><a href="#for-business">Claim your listing</a></li>
+          <li><a href="#">Business login</a></li>
+          <li><a href="#">Advertise with us</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Privacy policy</a></li>
+          <li><a href="#">Terms of service</a></li>
+          <li><a href="#">Review guidelines</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 reviews4australia.com — All rights reserved.</span>
+      <span>Made in Australia, reviewed by Australians.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('navToggle').addEventListener('click', function(){
+    var links = document.querySelector('.nav-links');
+    var isOpen = links.style.display === 'flex';
+    links.style.display = isOpen ? 'none' : 'flex';
+    links.style.flexDirection = 'column';
+    links.style.position = 'absolute';
+    links.style.top = '64px';
+    links.style.right = '28px';
+    links.style.background = 'var(--bush-ink-2)';
+    links.style.padding = '16px 20px';
+    links.style.borderRadius = '4px';
+    links.style.gap = '14px';
+  });
+</script>
+
+</body>
+</html>
