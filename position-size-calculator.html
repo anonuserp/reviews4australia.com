@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Futures / Forex Position Size Calculator</title>
+  <style>
+    :root {
+      --bg: #0f1419;
+      --card: #1a2332;
+      --border: #2d3a4f;
+      --text: #e7ecf3;
+      --muted: #8b9bb4;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --green: #22c55e;
+      --red: #ef4444;
+      --input-bg: #0d1219;
+      --radius: 10px;
+      --shadow: 0 8px 32px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+      padding: 20px 12px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 22px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 1.25rem;
+      font-weight: 650;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .header p {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    .mode-toggle {
+      display: flex;
+      gap: 8px;
+      padding: 16px 24px 0;
+    }
+
+    .mode-btn {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--muted);
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .mode-btn:hover {
+      border-color: var(--accent);
+      color: var(--text);
+    }
+
+    .mode-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .form {
+      padding: 20px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .field.full {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    input, select {
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: var(--text);
+      font-size: 0.95rem;
+      width: 100%;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input:focus, select:focus {
+      border-color: var(--accent);
+    }
+
+    input::placeholder {
+      color: #4a5568;
+    }
+
+    .risk-type {
+      display: flex;
+      gap: 6px;
+    }
+
+    .risk-type button {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid var(--border);
+      background: var(--input-bg);
+      color: var(--muted);
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .risk-type button.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .calc-btn {
+      margin-top: 6px;
+      padding: 13px;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 1rem;
+      font-weight: 650;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .calc-btn:hover {
+      background: var(--accent-hover);
+    }
+
+    .results {
+      margin-top: 4px;
+      background: var(--input-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      display: none;
+    }
+
+    .results.show {
+      display: block;
+    }
+
+    .results h3 {
+      font-size: 0.8rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 12px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .result-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .result-item.full {
+      grid-column: 1 / -1;
+    }
+
+    .result-label {
+      font-size: 0.72rem;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+
+    .result-value {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .result-value.highlight {
+      color: var(--green);
+      font-size: 1.4rem;
+    }
+
+    .result-value.risk {
+      color: var(--red);
+    }
+
+    .note {
+      margin-top: 12px;
+      font-size: 0.72rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+
+    .section-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-top: 4px;
+      margin-bottom: -4px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    @media (max-width: 420px) {
+      .row {
+        grid-template-columns: 1fr;
+      }
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Position Size Calculator</h1>
+        <p>Forex &amp; Futures • Risk-based sizing</p>
+      </div>
+
+      <div class="mode-toggle">
+        <button class="mode-btn active" data-mode="forex" id="modeForex">Forex</button>
+        <button class="mode-btn" data-mode="futures" id="modeFutures">Futures</button>
+      </div>
+
+      <div class="form">
+        <!-- Shared inputs -->
+        <div class="row">
+          <div class="field">
+            <label for="balance">Account Balance ($)</label>
+            <input type="number" id="balance" value="10000" min="0" step="any" />
+          </div>
+          <div class="field">
+            <label>Risk Type</label>
+            <div class="risk-type">
+              <button type="button" class="active" id="riskPctBtn">%</button>
+              <button type="button" id="riskFixedBtn">Fixed $</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="riskValue" id="riskLabel">Risk %</label>
+            <input type="number" id="riskValue" value="1" min="0" step="any" />
+          </div>
+          <div class="field">
+            <label for="stopDistance" id="stopDistanceLabel">Stop Distance (pips)</label>
+            <input type="number" id="stopDistance" value="50" min="0" step="any" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="field">
+            <label for="tpDistance" id="tpDistanceLabel">TP Distance (optional)</label>
+            <input type="number" id="tpDistance" value="" min="0" step="any" placeholder="For R:R only" />
+          </div>
+          <div class="field">
+            <label for="commission">Commission / Slippage ($)</label>
+            <input type="number" id="commission" value="0" min="0" step="any" placeholder="Optional" />
+          </div>
+        </div>
+
+        <!-- Forex-specific -->
+        <div id="forexSection">
+          <div class="section-label">Forex Settings</div>
+          <div class="row">
+            <div class="field">
+              <label for="pair">Currency Pair</label>
+              <select id="pair">
+                <option value="EURUSD">EUR/USD</option>
+                <option value="GBPUSD">GBP/USD</option>
+                <option value="USDJPY">USD/JPY</option>
+                <option value="USDCHF">USD/CHF</option>
+                <option value="AUDUSD">AUD/USD</option>
+                <option value="USDCAD">USD/CAD</option>
+                <option value="NZDUSD">NZD/USD</option>
+                <option value="EURGBP">EUR/GBP</option>
+                <option value="EURJPY">EUR/JPY</option>
+                <option value="GBPJPY">GBP/JPY</option>
+                <option value="CUSTOM">Custom</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="pipValue">Pip Value / Std Lot ($)</label>
+              <input type="number" id="pipValue" value="10" min="0" step="any" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="lotStep">Lot Step (broker)</label>
+              <input type="number" id="lotStep" value="0.01" min="0" step="any" />
+            </div>
+            <div class="field">
+              <!-- spacer -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Futures-specific -->
+        <div id="futuresSection" class="hidden">
+          <div class="section-label">Futures Settings</div>
+          <div class="row">
+            <div class="field full">
+              <label for="contract">Contract</label>
+              <select id="contract">
+                <option value="ES">ES (E-mini S&amp;P 500)</option>
+                <option value="MES">MES (Micro E-mini S&amp;P)</option>
+                <option value="NQ">NQ (E-mini Nasdaq)</option>
+                <option value="MNQ">MNQ (Micro Nasdaq)</option>
+                <option value="YM">YM (E-mini Dow)</option>
+                <option value="MYM">MYM (Micro Dow)</option>
+                <option value="RTY">RTY (E-mini Russell)</option>
+                <option value="M2K">M2K (Micro Russell)</option>
+                <option value="CL">CL (Crude Oil)</option>
+                <option value="MCL">MCL (Micro Crude)</option>
+                <option value="GC">GC (Gold)</option>
+                <option value="MGC">MGC (Micro Gold)</option>
+                <option value="SI">SI (Silver)</option>
+                <option value="NG">NG (Natural Gas)</option>
+                <option value="ZB">ZB (30Y Treasury)</option>
+                <option value="CUSTOM">Custom</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="tickSize">Tick Size</label>
+              <input type="number" id="tickSize" value="0.25" min="0" step="any" />
+            </div>
+            <div class="field">
+              <label for="tickValue">Tick Value ($)</label>
+              <input type="number" id="tickValue" value="12.50" min="0" step="any" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="stopUnit">Stop entered in</label>
+              <select id="stopUnit">
+                <option value="ticks">Ticks</option>
+                <option value="points">Points</option>
+              </select>
+            </div>
+            <div class="field">
+              <!-- spacer -->
+            </div>
+          </div>
+        </div>
+
+        <button class="calc-btn" id="calcBtn">Calculate Position Size</button>
+
+        <div class="results" id="results">
+          <h3>Results</h3>
+          <div class="result-grid">
+            <div class="result-item full">
+              <span class="result-label" id="sizeLabel">Position Size</span>
+              <span class="result-value highlight" id="positionSize">—</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Dollar Risk</span>
+              <span class="result-value risk" id="dollarRisk">—</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Risk per Unit</span>
+              <span class="result-value" id="riskPerUnit">—</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Stop Distance</span>
+              <span class="result-value" id="stopDist">—</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Reward : Risk</span>
+              <span class="result-value" id="rrRatio">—</span>
+            </div>
+          </div>
+          <p class="note" id="resultNote"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- Contract specs ---
+    const contracts = {
+      ES:  { tickSize: 0.25, tickValue: 12.50, name: "E-mini S&P 500" },
+      MES: { tickSize: 0.25, tickValue: 1.25,  name: "Micro E-mini S&P" },
+      NQ:  { tickSize: 0.25, tickValue: 5.00,  name: "E-mini Nasdaq" },
+      MNQ: { tickSize: 0.25, tickValue: 0.50,  name: "Micro Nasdaq" },
+      YM:  { tickSize: 1,    tickValue: 5.00,  name: "E-mini Dow" },
+      MYM: { tickSize: 1,    tickValue: 0.50,  name: "Micro Dow" },
+      RTY: { tickSize: 0.10, tickValue: 5.00,  name: "E-mini Russell" },
+      M2K: { tickSize: 0.10, tickValue: 0.50,  name: "Micro Russell" },
+      CL:  { tickSize: 0.01, tickValue: 10.00, name: "Crude Oil" },
+      MCL: { tickSize: 0.01, tickValue: 1.00,  name: "Micro Crude" },
+      GC:  { tickSize: 0.10, tickValue: 10.00, name: "Gold" },
+      MGC: { tickSize: 0.10, tickValue: 1.00,  name: "Micro Gold" },
+      SI:  { tickSize: 0.005,tickValue: 25.00, name: "Silver" },
+      NG:  { tickSize: 0.001,tickValue: 10.00, name: "Natural Gas" },
+      ZB:  { tickSize: 1/32, tickValue: 31.25, name: "30Y Treasury" },
+    };
+
+    // Pip defaults for common pairs (USD account approximations)
+    const pairs = {
+      EURUSD: { pipValue: 10 },
+      GBPUSD: { pipValue: 10 },
+      USDJPY: { pipValue: 6.67 },
+      USDCHF: { pipValue: 10.5 },
+      AUDUSD: { pipValue: 10 },
+      USDCAD: { pipValue: 7.5 },
+      NZDUSD: { pipValue: 10 },
+      EURGBP: { pipValue: 12.5 },
+      EURJPY: { pipValue: 6.67 },
+      GBPJPY: { pipValue: 6.67 },
+    };
+
+    // State
+    let mode = "forex";
+    let riskIsPercent = true;
+
+    // Elements
+    const modeForex = document.getElementById("modeForex");
+    const modeFutures = document.getElementById("modeFutures");
+    const forexSection = document.getElementById("forexSection");
+    const futuresSection = document.getElementById("futuresSection");
+    const riskPctBtn = document.getElementById("riskPctBtn");
+    const riskFixedBtn = document.getElementById("riskFixedBtn");
+    const riskLabel = document.getElementById("riskLabel");
+    const stopDistanceLabel = document.getElementById("stopDistanceLabel");
+    const tpDistanceLabel = document.getElementById("tpDistanceLabel");
+    const pairSelect = document.getElementById("pair");
+    const contractSelect = document.getElementById("contract");
+    const calcBtn = document.getElementById("calcBtn");
+    const results = document.getElementById("results");
+
+    // Mode switching
+    function setMode(m) {
+      mode = m;
+      modeForex.classList.toggle("active", m === "forex");
+      modeFutures.classList.toggle("active", m === "futures");
+      forexSection.classList.toggle("hidden", m !== "forex");
+      futuresSection.classList.toggle("hidden", m !== "futures");
+
+      if (m === "forex") {
+        stopDistanceLabel.textContent = "Stop Distance (pips)";
+        tpDistanceLabel.textContent = "TP Distance (pips, optional)";
+        document.getElementById("stopDistance").value = "50";
+        document.getElementById("tpDistance").placeholder = "For R:R only";
+      } else {
+        stopDistanceLabel.textContent = "Stop Distance";
+        tpDistanceLabel.textContent = "TP Distance (optional)";
+        document.getElementById("stopDistance").value = "20";
+        document.getElementById("tpDistance").placeholder = "Same unit as stop";
+        updateContract();
+      }
+      results.classList.remove("show");
+    }
+
+    modeForex.addEventListener("click", () => setMode("forex"));
+    modeFutures.addEventListener("click", () => setMode("futures"));
+
+    // Risk type
+    riskPctBtn.addEventListener("click", () => {
+      riskIsPercent = true;
+      riskPctBtn.classList.add("active");
+      riskFixedBtn.classList.remove("active");
+      riskLabel.textContent = "Risk %";
+      document.getElementById("riskValue").value = "1";
+    });
+    riskFixedBtn.addEventListener("click", () => {
+      riskIsPercent = false;
+      riskFixedBtn.classList.add("active");
+      riskPctBtn.classList.remove("active");
+      riskLabel.textContent = "Risk $";
+      document.getElementById("riskValue").value = "100";
+    });
+
+    // Pair change
+    pairSelect.addEventListener("change", () => {
+      const p = pairSelect.value;
+      if (p !== "CUSTOM" && pairs[p]) {
+        document.getElementById("pipValue").value = pairs[p].pipValue;
+      }
+    });
+
+    // Contract change
+    function updateContract() {
+      const c = contractSelect.value;
+      if (c !== "CUSTOM" && contracts[c]) {
+        document.getElementById("tickSize").value = contracts[c].tickSize;
+        document.getElementById("tickValue").value = contracts[c].tickValue;
+      }
+    }
+    contractSelect.addEventListener("change", updateContract);
+
+    // Helpers
+    function num(id) {
+      const el = document.getElementById(id);
+      if (!el || el.value === "") return null;
+      return parseFloat(el.value);
+    }
+
+    function roundDown(value, step) {
+      if (step <= 0) return value;
+      return Math.floor(value / step) * step;
+    }
+
+    function formatNum(n, decimals = 2) {
+      if (n === null || isNaN(n) || !isFinite(n)) return "—";
+      return n.toLocaleString(undefined, {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+    }
+
+    // Calculate
+    calcBtn.addEventListener("click", () => {
+      const balance = num("balance");
+      const riskInput = num("riskValue");
+      const stopDist = num("stopDistance");
+      const tpDist = num("tpDistance");
+      const commission = num("commission") || 0;
+
+      if (!balance || balance <= 0) {
+        alert("Please enter a valid Account Balance.");
+        return;
+      }
+      if (!riskInput || riskInput <= 0) {
+        alert("Please enter a valid Risk amount.");
+        return;
+      }
+      if (!stopDist || stopDist <= 0) {
+        alert("Please enter a valid Stop Distance.");
+        return;
+      }
+
+      const riskAmount = riskIsPercent ? balance * (riskInput / 100) : riskInput;
+      const effectiveRisk = Math.max(0, riskAmount - commission);
+
+      let positionSizeText = "";
+      let stopDistText = "";
+      let riskPerUnitText = "";
+      let rrText = "—";
+      let note = "";
+      let sizeLabel = "Position Size";
+
+      if (mode === "forex") {
+        const pipValue = num("pipValue");
+        const lotStep = num("lotStep") || 0.01;
+
+        if (!pipValue || pipValue <= 0) {
+          alert("Pip Value must be greater than zero.");
+          return;
+        }
+
+        const riskPerLot = stopDist * pipValue;
+        let lots = effectiveRisk / riskPerLot;
+        lots = roundDown(lots, lotStep);
+
+        const units = lots * 100000;
+
+        positionSizeText = `${formatNum(lots, 2)} lots`;
+        if (lots > 0) {
+          positionSizeText += `  (${formatNum(units, 0)} units)`;
+        }
+        stopDistText = `${formatNum(stopDist, 1)} pips`;
+        riskPerUnitText = `$${formatNum(riskPerLot, 2)} / std lot`;
+        sizeLabel = "Position Size (Lots)";
+
+        if (tpDist && tpDist > 0) {
+          rrText = `1 : ${formatNum(tpDist / stopDist, 2)}`;
+        }
+
+        const actualRisk = lots * riskPerLot + commission;
+        note = `Based on ${formatNum(stopDist, 1)} pip stop. Actual $ risk ≈ $${formatNum(actualRisk, 2)} (incl. commission). Pip values are approximations for USD accounts — adjust for non-USD pairs.`;
+      } else {
+        // Futures
+        const tickSize = num("tickSize");
+        const tickValue = num("tickValue");
+        const stopUnit = document.getElementById("stopUnit").value;
+
+        if (!tickSize || tickSize <= 0 || !tickValue || tickValue <= 0) {
+          alert("Tick Size and Tick Value must be greater than zero.");
+          return;
+        }
+
+        let stopTicks = stopDist;
+        if (stopUnit === "points") {
+          stopTicks = stopDist / tickSize;
+        }
+
+        const riskPerContract = stopTicks * tickValue;
+        let contractsQty = Math.floor(effectiveRisk / riskPerContract);
+
+        positionSizeText = `${contractsQty} contract${contractsQty !== 1 ? "s" : ""}`;
+        stopDistText = stopUnit === "points"
+          ? `${formatNum(stopDist, 2)} pts (${formatNum(stopTicks, 1)} ticks)`
+          : `${formatNum(stopTicks, 1)} ticks`;
+        riskPerUnitText = `$${formatNum(riskPerContract, 2)} / contract`;
+        sizeLabel = "Contracts";
+
+        if (tpDist && tpDist > 0) {
+          let tpTicks = tpDist;
+          if (stopUnit === "points") {
+            tpTicks = tpDist / tickSize;
+          }
+          rrText = `1 : ${formatNum(tpTicks / stopTicks, 2)}`;
+        }
+
+        const actualRisk = contractsQty * riskPerContract + commission;
+        const leftover = effectiveRisk - (contractsQty * riskPerContract);
+        note = `Rounded down to whole contracts. Actual $ risk ≈ $${formatNum(actualRisk, 2)} (incl. commission). Unused risk budget: $${formatNum(leftover, 2)}.`;
+      }
+
+      // Display
+      document.getElementById("sizeLabel").textContent = sizeLabel;
+      document.getElementById("positionSize").textContent = positionSizeText;
+      document.getElementById("dollarRisk").textContent = `$${formatNum(riskAmount, 2)}`;
+      document.getElementById("stopDist").textContent = stopDistText;
+      document.getElementById("riskPerUnit").textContent = riskPerUnitText;
+      document.getElementById("rrRatio").textContent = rrText;
+      document.getElementById("resultNote").textContent = note;
+
+      results.classList.add("show");
+    });
+
+    // Init
+    updateContract();
+  </script>
+</body>
+</html>
