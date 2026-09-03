@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Myfxbook Economic Calendar</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent;
+    }
+
+    .calendar-container {
+      width: 100%;
+      height: 100%;
+      box-sizing: border-box;
+    }
+
+    .calendar-frame {
+      display: block;
+      width: 100%;
+      height: calc(100% - 35px);
+      min-height: 467px;
+      border: 0;
+    }
+
+    .credit {
+      margin-top: 10px;
+      width: fit-content;
+      margin-left: auto;
+      margin-right: auto;
+      font-family: Roboto, Arial, sans-serif;
+      font-size: 13px;
+      color: #666666;
+    }
+
+    .credit a {
+      color: #666666;
+      text-decoration: none;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="calendar-container">
+    <iframe
+      class="calendar-frame"
+      src="https://widget.mfbcdn.net/widget/calendar.html?lang=en&amp;impacts=2,3&amp;countries=United%20Kingdom,United%20States"
+      title="Myfxbook Economic Calendar"
+      frameborder="0"
+      loading="lazy">
+    </iframe>
+
+    <div class="credit">
+      <a
+        href="https://www.myfxbook.com/forex-economic-calendar?utm_source=widget13&amp;utm_medium=link&amp;utm_campaign=copyright"
+        title="Economic Calendar"
+        class="myfxbookLink"
+        target="_blank"
+        rel="noopener">
+        <b>Economic Calendar</b>
+      </a>
+      by Myfxbook.com
+    </div>
+  </div>
+</body>
+</html>
